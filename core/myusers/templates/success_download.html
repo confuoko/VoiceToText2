@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Файл успешно загружен</h2>
+    <p>Загрузите еще один файл или перейдите во вкладку "Аналитика"</p>
+
+    <a href="{% url 'myusers:welcome' %}" class="btn btn-secondary">Назад</a>
+    <a href="{% url 'myusers:call_list' %}" class="btn btn-secondary">Аналитика</a>
+{% endblock %}

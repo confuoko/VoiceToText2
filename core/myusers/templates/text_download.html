@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Загрузка текстовых файлов</h2>
+    <p>Здесь вы можете загрузить текстовый файл для анализа.</p>
+
+    <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="text_file" accept=".txt" required>
+            <button type="submit">Загрузить</button>
+        </form>
+
+    <a href="{% url 'myusers:welcome' %}" class="btn btn-secondary">Назад</a>
+{% endblock %}

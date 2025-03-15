@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Добро пожаловать, {{ username }}!</h2>
+    <p>Рады видеть вас в нашем приложении.</p>
+    <a href="{% url 'myusers:audio_download' %}" class="btn btn-primary">Загрузить аудио</a>
+    <a href="{% url 'myusers:text_download' %}" class="btn btn-secondary">Загрузить текст</a>
+
+{% endblock %}

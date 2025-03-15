@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Список касаний пользователя: {{ username }}!</h2>
+
+    {% if calls %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название файла</th>
+                    <th>Компания (Lead)</th>
+                    <th>Телефон</th>
+                    <th>Представитель</th>
+                    <th>Итог звонка (Lead)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for call in calls %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>  {# Нумерация с 1 #}
+                        <td>{{ call.text_file.name_save }}</td> {# имя файла #}
+                        <td>{{ call.opponent.title }}</td> {# название компании #}
+                        <td>{{ call.opponent.telephone }}</td> {# телефон компании #}
+                        <td>{{ call.opponent.worker.name }}</td> {# имя представителя #}
+                        <td>
+                            {% if call.lead == "success" %}
+                                Да
+                            {% elif call.lead == "fail" %}
+                                Нет
+                            {% else %}
+                                Неопределено
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>У вас пока нет загруженных звонков.</p>
+    {% endif %}
+
+
+
+
+    <a href="{% url 'myusers:welcome' %}" class="btn btn-secondary">Назад</a>
+{% endblock %}

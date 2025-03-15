@@ -1,0 +1,7 @@
+Django>=4.2,<5.0
+psycopg2-binary
+
+# для модели по кластеризации
+transformers==4.46.3
+torch
+safetensors
