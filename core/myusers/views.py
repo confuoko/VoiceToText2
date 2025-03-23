@@ -38,6 +38,11 @@ class WelcomeView(LoginRequiredMixin, TemplateView):
 # Страница загрузки аудиофайлов
 class AudioDownloadView(LoginRequiredMixin, TemplateView):
     template_name = "audio_download.html"
+    success_url = "myusers:success_download"
+
+    def post(self, request, *args, **kwargs):
+        # Не сохраняем файл, а сразу редиректим на успешную страницу
+        return redirect('myusers:success_download')
 
 
 
@@ -113,7 +118,9 @@ class TextDownloadView(LoginRequiredMixin, TemplateView):
         if org_value:
             company_name = ' '.join(org_value)  # Склеиваем все строки в одну строку
         else:
-            company_name = None
+            # Генерируем уникальное название
+            count = Company.objects.count() + 1
+            company_name = f"Компания №{count}"
 
         # Получаем телефон компании
         tel_value = result.get('TEL', None)
@@ -140,12 +147,24 @@ class TextDownloadView(LoginRequiredMixin, TemplateView):
         else:
             representative_name = None
 
+        # Проверяем, существует ли уже оппонент с таким именем
+        if representative_name:
+            counter = 1
+            # Ищем, есть ли уже оппонент с таким именем
+            while Opponent.objects.filter(name=representative_name).exists():
+                # Если существует, увеличиваем счетчик и добавляем к имени
+                representative_name = f"{representative_name} {counter}"
+                counter += 1
+
         # Создаем экземпляр Opponent
         opponent_instance = Opponent.objects.create(
             name=representative_name,  # Присваиваем имя
             position=None,  # Позиция будет None, так как данных нет
             responsibility=None  # Ответственность будет None, так как данных нет
         )
+
+
+
 
         # Привязываем созданного оппонента к компании
         if company_instance:  # Убедитесь, что компания существует

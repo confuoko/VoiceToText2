@@ -1,8 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Загрузка аудиофайлов</h2>
-    <p>Здесь вы можете загрузить аудиофайл для анализа.</p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4 text-center" style="width: 100%; max-width: 500px;">
+        <h2 class="mb-3">🎵 Загрузка аудиофайлов</h2>
+        <p class="text-muted">Здесь вы можете загрузить аудиофайл для анализа.</p>
 
-    <a href="{% url 'myusers:welcome' %}" class="btn btn-secondary">Назад</a>
+        <form method="post" enctype="multipart/form-data" class="d-flex flex-column gap-3">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <input type="file" name="audio_file" accept=".mp3,.wav,.ogg" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Загрузить</button>
+        </form>
+        <a href="{% url 'myusers:call_list' %}" class="btn btn-success mt-3 w-100">Моя Аналитика</a>
+        <a href="{% url 'myusers:welcome' %}" class="btn btn-secondary mt-3">Назад</a>
+    </div>
+</div>
 {% endblock %}

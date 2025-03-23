@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Добро пожаловать, {{ username }}!</h2>
-    <p>Рады видеть вас в нашем приложении.</p>
-    <a href="{% url 'myusers:audio_download' %}" class="btn btn-primary">Загрузить аудио</a>
-    <a href="{% url 'myusers:text_download' %}" class="btn btn-secondary">Загрузить текст</a>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4 text-center" style="width: 100%; max-width: 500px;">
+        <h2 class="mb-3">Добро пожаловать, {{ username }}!</h2>
+        <p class="text-muted">Рады видеть вас в нашем приложении.</p>
 
+        <div class="d-grid gap-3">
+            <a href="{% url 'myusers:audio_download' %}" class="btn btn-primary">🎵 Загрузить аудио</a>
+            <a href="{% url 'myusers:text_download' %}" class="btn btn-secondary">📝 Загрузить текст</a>
+            <a href="{% url 'myusers:call_list' %}" class="btn btn-success w-100">Моя Аналитика</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

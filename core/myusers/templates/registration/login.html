@@ -1,11 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Вход</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Войти</button>
-    </form>
-    <p>Нет аккаунта? <a href="{% url 'signup' %}">Зарегистрироваться</a></p>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+        <h2 class="text-center mb-4">Вход</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Имя пользователя</label>
+                <input type="text" name="username" id="id_username" class="form-control" placeholder="Введите имя" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_password" class="form-label">Пароль</label>
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Введите пароль" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Войти</button>
+        </form>
+
+        <div class="text-center mt-3">
+            Нет аккаунта? <a href="{% url 'signup' %}" class="text-decoration-none">Зарегистрироваться</a>
+        </div>
+    </div>
+</div>
 {% endblock %}
