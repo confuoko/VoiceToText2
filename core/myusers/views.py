@@ -1,6 +1,8 @@
 import datetime
+import time
 import os
-
+import logging
+import re
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.base import ContentFile
@@ -9,10 +11,19 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 
-from myusers.models import User, AudioTextFile, Area, Call, TextPure, Company, Opponent
+from myusers.models import User, AudioTextFile, Area, Call, TextPure, Company, Opponent, Purpose
 
 from .claster_model.claster_func import get_clusters
 
+from django.views.generic.edit import View
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404
+from django.forms import modelform_factory
+
+
+
+# Настраиваем логгер
+logger = logging.getLogger(__name__)
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -53,6 +64,7 @@ class TextDownloadView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         uploaded_file = request.FILES.get("text_file")
+        start_time = time.time()  # Запоминаем время начала обработки
 
         if not uploaded_file or not uploaded_file.name.endswith(".txt"):
             return self.render_to_response({"error": "Файл должен быть в формате .txt"})
@@ -140,6 +152,47 @@ class TextDownloadView(LoginRequiredMixin, TemplateView):
         call_instance.opponent = company_instance  # Привязываем компанию к полю "opponent"
         call_instance.save()
 
+        # Создаем экземпляр Purpose
+        purpose_instance = Purpose.objects.create(
+            description="noname",
+            data_type="noname",
+            data_type_short="noname",
+            amount=0,
+            price_month=0,
+            price_one_file=0,
+        )
+
+        if doc_value:
+            doc_type = ' '.join(doc_value)  # Склеиваем все строки в одну строку
+        else:
+            doc_type = "Тип неопределен"
+
+        # Присваиваем новое значение полю data_type созданного экземпляра
+        purpose_instance.data_type = doc_type
+        purpose_instance.save()
+
+
+
+        if vol_value:
+            # Извлекаем только числа из строки
+            numbers = re.findall(r'\d+', vol_value[0])
+            data_value = int(numbers[0]) if numbers else 0  # Берем первое найденное число
+        else:
+            data_value = 0
+
+        print(data_value)
+        # Присваиваем новое значение полю amount созданного экземпляра
+        purpose_instance.amount = data_value
+        purpose_instance.save()
+
+        print(purpose_instance.amount)
+
+        call_instance.purpose = purpose_instance
+        call_instance.save()
+
+
+
+
         # Склеиваем строки в имя представителя, если ключ 'NAME' присутствует
         name_value = result.get('NAME', None)
         if name_value:
@@ -164,19 +217,20 @@ class TextDownloadView(LoginRequiredMixin, TemplateView):
         )
 
 
-
-
         # Привязываем созданного оппонента к компании
         if company_instance:  # Убедитесь, что компания существует
             company_instance.worker = opponent_instance
             company_instance.save()  # Сохраняем изменения в компании
 
+        # Завершаем замер времени перед редиректом
+        end_time = time.time()
+        elapsed_time = end_time - start_time
 
-
-
-
+        logger.info(f"Файл обработан за {elapsed_time:.2f} секунд.")
+        print(f"Файл обработан за {elapsed_time:.2f} секунд.")
 
         return redirect(self.success_url)  # Перенаправляем на страницу успешной загрузки
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -194,3 +248,58 @@ class CallListView(LoginRequiredMixin, TemplateView):
         context["username"] = self.request.user.username  # Передаем имя пользователя
         context["calls"] = Call.objects.filter(user=self.request.user)  # Все звонки текущего пользователя
         return context
+
+
+class EditView(LoginRequiredMixin, View):
+    template_name = "edit.html"
+
+    def get_forms(self, call):
+        """
+        Формируем формы для редактирования указанных полей связанных моделей.
+        """
+        # Укажи конкретные поля, которые необходимо редактировать для каждой модели
+        CallForm = modelform_factory(Call, fields=["lead", "fail_reason"])
+        CompanyForm = modelform_factory(Company, fields=["title", "telephone"])
+        OpponentForm = modelform_factory(Opponent, fields=["position", "responsibility"])
+        AudioFileForm = modelform_factory(AudioTextFile, fields=["name_input", "is_audio"])
+        TextPureForm = modelform_factory(TextPure, fields=["text"])
+        PurposeForm = modelform_factory(Purpose, fields=["description", "amount", "price_month"])
+
+        return {
+            "call_form": CallForm(instance=call),
+            "company_form": CompanyForm(instance=call.opponent),
+            "opponent_form": OpponentForm(instance=call.opponent.worker),
+            "audio_file_form": AudioFileForm(instance=call.text_file),
+            "text_pure_form": TextPureForm(instance=call.text_file.text_content),
+            "purpose_form": PurposeForm(instance=call.purpose),
+        }
+
+    def post(self, request, *args, **kwargs):
+        call_id = request.GET.get("call_id")
+        call = get_object_or_404(Call, id=call_id)
+
+        # Получаем формы с текущими данными
+        forms = self.get_forms(call)
+
+        # Обновляем формы с POST-данными
+        for key, form in forms.items():
+            forms[key] = form.__class__(request.POST, instance=form.instance)
+
+        # Проверка всех форм на валидность
+        if all(form.is_valid() for form in forms.values()):
+            # Сохранение всех форм
+            for form in forms.values():
+                form.save()
+            return redirect(reverse_lazy("myusers:edit") + f"?call_id={call.id}")
+
+        return render(request, self.template_name, {"forms": forms})
+
+    def get(self, request, *args, **kwargs):
+        call_id = request.GET.get("call_id")
+        if not call_id:
+            raise Http404("Не указан ID звонка")
+
+        call = get_object_or_404(Call, id=call_id)
+        forms = self.get_forms(call)
+
+        return render(request, self.template_name, {"forms": forms})

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Редактирование звонка и связанных данных</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <h2>Звонок</h2>
+    {{ forms.call_form.as_p }}
+
+    <h2>Компания</h2>
+    {{ forms.company_form.as_p }}
+
+    <h2>Должностное лицо</h2>
+    {{ forms.opponent_form.as_p }}
+
+    <h2>Файл</h2>
+    {{ forms.audio_file_form.as_p }}
+
+    <h2>Текст из файла</h2>
+    {{ forms.text_pure_form.as_p }}
+
+    <h2>Цель переговоров</h2>
+    {{ forms.purpose_form.as_p }}
+
+    <button type="submit" class="btn btn-primary">Сохранить все изменения</button>
+</form>
+{% endblock %}

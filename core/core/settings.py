@@ -28,6 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "158.160.176.115",
+    "158.160.146.241",
     ".ngrok.io",
     ".ngrok-free.app",
     ".trycloudflare.com",

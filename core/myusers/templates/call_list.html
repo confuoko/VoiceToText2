@@ -21,7 +21,11 @@
                 <th>Компания (Lead)</th>
                 <th>Телефон</th>
                 <th>Представитель</th>
+                <th>Объем данных</th>
+                <th>Тип документа</th>
                 <th>Итог звонка (Lead)</th>
+                <th>Редактирование</th>
+
             </tr>
         </thead>
         <tbody>
@@ -32,14 +36,19 @@
                 <td>{{ call.opponent.title }}</td>
                 <td>{{ call.opponent.telephone }}</td>
                 <td>{{ call.opponent.worker.name }}</td>
+                <td>{{ call.purpose.amount }}</td>
+                <td>{{ call.purpose.data_type }}</td>
                 <td>
                     {% if call.lead == "success" %}
                         <span class="badge bg-success">Да</span>
                     {% elif call.lead == "fail" %}
                         <span class="badge bg-danger">Нет</span>
                     {% else %}
-                        <span class="badge bg-warning text-dark">Неопределено</span>
+                        <span class="badge bg-warning text-dark">Успешный лид</span>
                     {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'myusers:edit' %}?call_id={{ call.id }}">Редактировать всё</a>
                 </td>
             </tr>
             {% endfor %}
