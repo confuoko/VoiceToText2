@@ -100,3 +100,62 @@ class Call(models.Model):
 
     def __str__(self):
         return f"Звонок {self.user.username} с {self.opponent.title}"
+
+
+class CallItem(models.Model):
+    LEAD_CHOICES = [
+        ("success", "Успех"),
+        ("fail", "Неудача"),
+        ("hesitant", "Неопределённый"),
+        (None, "Нет данных"),
+    ]
+
+    # Основные поля
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="call_items", verbose_name="Пользователь")
+    company_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Название компании")
+    telephone = models.CharField(max_length=255, blank=True, null=True, verbose_name="Телефон представителя")
+    person_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="ФИО представителя")
+    position = models.CharField(max_length=255, blank=True, null=True, verbose_name="Должность представителя")
+    responsibility = models.TextField(blank=True, null=True, verbose_name="Зона ответственности")
+
+    # Информация о файле
+    name_input = models.CharField(max_length=255, verbose_name="Исходное название файла")
+    name_save = models.CharField(max_length=255, unique=True, verbose_name="Сохраненное название файла")
+    name_audio_to_txt = models.CharField(max_length=255, blank=True, null=True, verbose_name="Название транскрибированного текстового файла")
+    name_file_cleaned = models.CharField(max_length=255, blank=True, null=True,
+                                         verbose_name="Название очищенного аудио файла")
+    data_save = models.DateField(verbose_name="Дата загрузки", blank=True, null=True)
+    is_audio = models.BooleanField(default=False, verbose_name="Аудиофайл")
+    do_clean = models.BooleanField(default=False, verbose_name="Необходимость в предобработке")
+    audio_length = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True,
+                                       verbose_name="Длина аудиозаписи")
+
+    # Информация о запросе
+    description = models.TextField(blank=True, null=True, verbose_name="Описание запроса")
+    data_type = models.CharField(max_length=255, blank=True, null=True, verbose_name="Тип данных")
+    data_type_short = models.CharField(max_length=255, blank=True, null=True, verbose_name="Краткий тип данных")
+    amount = models.IntegerField(blank=True, null=True, verbose_name="Количество документов в месяц")
+    price_month = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True,
+                                      verbose_name="Цена за месяц")
+    price_one_file = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True,
+                                         verbose_name="Цена за файл")
+
+    # Итоги взаимодействия
+    lead = models.CharField(max_length=10, choices=LEAD_CHOICES, null=True, blank=True,
+                            verbose_name="Успешность касания")
+    fail_reason = models.TextField(blank=True, null=True, verbose_name="Причина отказа")
+
+    # Область исследования
+    area_name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Наименование области")
+    area = models.ForeignKey(Area, on_delete=models.SET_NULL, null=True, blank=True, related_name="itemcalls",
+                             verbose_name="Область исследования")
+    next_place = models.CharField(max_length=255, blank=True, null=True, verbose_name="Время и место следующей встречи")
+
+
+    class Meta:
+        verbose_name = "Касание"
+        verbose_name_plural = "Касания"
+        unique_together = ("id", "name_save")
+
+    def __str__(self):
+        return f"{self.name_input} - {self.company_name or 'Без компании'}"

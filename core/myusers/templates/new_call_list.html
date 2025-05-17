@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Список взаимодействий с клиентами</h2>
+
+    <!-- Отладочная информация -->
+    <p>Количество записей: {{ call_items_count }}</p>
+    <p>Всего страниц: {{ total_pages }}</p>
+    <p>Текущая страница: {{ current_page }}</p>
+
+    <!-- Форма для фильтрации -->
+    <form method="get" class="mb-3">
+        <div class="row">
+            <div class="col">
+                <input type="text" name="user" class="form-control" placeholder="Фильтровать по пользователю" value="{{ request.GET.user }}">
+            </div>
+            <div class="col">
+                <input type="date" name="data_save" class="form-control" value="{{ request.GET.data_save }}">
+            </div>
+            <div class="col">
+                <select name="lead" class="form-control">
+                    <option value="">Фильтровать по успешности касания</option>
+                    <option value="success" {% if request.GET.lead == "success" %}selected{% endif %}>Успех</option>
+                    <option value="fail" {% if request.GET.lead == "fail" %}selected{% endif %}>Неудача</option>
+                    <option value="hesitant" {% if request.GET.lead == "hesitant" %}selected{% endif %}>Неопределённый</option>
+                    <option value="None" {% if request.GET.lead == "None" %}selected{% endif %}>Нет данных</option>
+                </select>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary w-100">Применить фильтры</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped" style="min-width: 1000px;">
+            <thead>
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Название компании</th>
+                    <th>Телефон представителя</th>
+                    <th>ФИО представителя</th>
+                    <th>Должность</th>
+                    <th>Зона ответственности</th>
+                    <th>Исходное название файла</th>
+                    <th>Дата загрузки</th>
+                    <th>Описание запроса</th>
+                    <th>Тип данных</th>
+                    <th>Количество документов</th>
+                    <th>Цена за месяц</th>
+                    <th>Цена за файл</th>
+                    <th>Успешность касания</th>
+                    <th>Причина отказа</th>
+                    <th>Область исследования</th>
+                    <th>Время и место следующей встречи</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for call_item in call_items %}
+                <tr>
+                    <td>{{ call_item.user }}</td>
+                    <td>{{ call_item.company_name }}</td>
+                    <td>{{ call_item.telephone }}</td>
+                    <td>{{ call_item.person_name }}</td>
+                    <td>{{ call_item.position }}</td>
+                    <td>{{ call_item.responsibility }}</td>
+                    <td>{{ call_item.name_input }}</td>
+                    <td>{{ call_item.data_save }}</td>
+                    <td>{{ call_item.description }}</td>
+                    <td>{{ call_item.data_type }}</td>
+                    <td>{{ call_item.amount }}</td>
+                    <td>{{ call_item.price_month }}</td>
+                    <td>{{ call_item.price_one_file }}</td>
+                    <td>{{ call_item.lead }}</td>
+                    <td>{{ call_item.fail_reason }}</td>
+                    <td>{{ call_item.area }}</td>
+                    <td>{{ call_item.next_place }}</td>
+                    <td>
+                        <!-- Кнопки для редактирования и удаления -->
+                        <a href="{% url 'myusers:edit_call_item' call_item.id %}" class="btn btn-warning btn-sm">Редактировать</a>
+                        <a href="{% url 'myusers:delete_call_item' call_item.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Вы уверены, что хотите удалить эту запись?');">Удалить</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <!-- Кнопка "Предыдущая" -->
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}&user={{ request.GET.user }}&data_save={{ request.GET.data_save }}&lead={{ request.GET.lead }}" class="btn btn-secondary">Предыдущая</a>
+        {% else %}
+            <span class="btn btn-secondary disabled">Предыдущая</span>
+        {% endif %}
+
+        <!-- Номера страниц -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <span class="btn btn-primary disabled">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}&user={{ request.GET.user }}&data_save={{ request.GET.data_save }}&lead={{ request.GET.lead }}" class="btn btn-secondary">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Кнопка "Следующая" -->
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&user={{ request.GET.user }}&data_save={{ request.GET.data_save }}&lead={{ request.GET.lead }}" class="btn btn-secondary">Следующая</a>
+        {% else %}
+            <span class="btn btn-secondary disabled">Следующая</span>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -13,9 +13,25 @@
                 <input type="file" name="audio_file" accept=".mp3,.wav,.ogg" class="form-control" required>
             </div>
 
+            <!-- Добавляем выпадающий список для выбора области -->
+            <div class="mb-3">
+                <label for="area" class="form-label">Выберите территорию</label>
+                <select name="area" id="area" class="form-control" required>
+                    <option value="" disabled selected>Выберите территорию</option>
+                    {% for area in areas %}
+                        <option value="{{ area.id }}">{{ area.area_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Добавляем чекбокс -->
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="preprocessing_required" name="preprocessing_required">
+                <label class="form-check-label" for="preprocessing_required">Обязательная предобработка</label>
+            </div>
+
             <button type="submit" class="btn btn-primary w-100">Загрузить</button>
         </form>
-        <a href="{% url 'myusers:call_list' %}" class="btn btn-success mt-3 w-100">Моя Аналитика</a>
         <a href="{% url 'myusers:welcome' %}" class="btn btn-secondary mt-3">Назад</a>
     </div>
 </div>

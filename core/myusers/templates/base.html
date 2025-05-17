@@ -18,9 +18,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
-                        <li class="nav-item">
+                    <li class="nav-item">
+                            <a class="nav-link btn btn-outline-light" href="{% url 'myusers:welcome' %}">На главную</a>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link btn btn-outline-light" href="{% url 'myusers:new_call_list' %}">Моя аналитика</a>
+                    </li>
+                    <li class="nav-item">
                             <a class="nav-link btn btn-outline-light" href="{% url 'logout' %}">Выйти</a>
-                        </li>
+                    </li>
+
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link btn btn-outline-light me-2" href="{% url 'login' %}">Войти</a>
