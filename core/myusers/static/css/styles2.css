@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+
+/* Базовые стили */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at 20% 20%, #1e3c72, #2a5298); /* Темно-синий фон */
+  min-height: 100vh;
+  color: #f8f8f8;
+  overflow-x: hidden;
+}
+
+/* Навигация */
+nav {
+  width: 96%;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.1); /* Тёмный полупрозрачный фон */
+  backdrop-filter: blur(8px);
+  border-radius: 8px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Общие стили для "стеклянных" блоков */
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(16px);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem auto;
+  width: min(90vw, 1000px);
+  overflow-x: hidden;
+}
+
+/* Заголовки */
+h2 {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #ffffff;
+}
+
+/* Стили для форм */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.icon-input {
+  position: relative;
+  width: 100%;
+}
+
+.icon-input i {
+  position: absolute;
+  top: 50%;
+  left: 0.9rem;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.icon-input input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: rgba(255, 255, 255, 0.1); /* Тёмно-серый фон */
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.5); /* Светло-серые плейсхолдеры */
+}
+
+/* Кнопки */
+button {
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(to right, #00ffe0, #00d4ff);
+  color: #000;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.02);
+}
+
+/* Ошибки */
+.error {
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  display: none;
+}
+
+/* Стили для таблиц */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background: #f0f0f0; /* Светло-серый фон для таблиц */
+}
+
+th {
+  background-color: #2a5298; /* Темно-синий фон для заголовков таблицы */
+  color: white;
+  padding: 1rem;
+  text-align: left;
+}
+
+td {
+  background-color: #f8f8f8; /* Светло-серый фон для ячеек таблицы */
+  color: #333; /* Темно-серый цвет текста */
+  padding: 1rem;
+}
+
+tr:nth-child(even) td {
+  background-color: #e0e0e0; /* Чередование цвета строк таблицы */
+}
+
+/* Стиль для заголовков форм */
+h3 {
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+/* Новый стиль для текста в карточке */
+.card p.text-muted {
+  color: #dddddd; /* Светло-серый цвет текста, чтобы контрастировать с тёмным фоном */
+}
+
+.card h2 {
+  color: #ffffff; /* Белый цвет для заголовка */
+}
+
+.card .btn {
+  background: linear-gradient(to right, #00ffe0, #00d4ff); /* Кнопки с градиентом */
+}
+
+.card .btn-primary {
+  color: #000; /* Чёрный цвет текста на кнопках */
+}
+
+.card .btn-secondary {
+  color: #000; /* Чёрный цвет текста на кнопках */
+}
+
+/* Стили для заголовков */
+h2 {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #ffffff; /* Белый цвет для заголовков */
+}
+
+.card h2 {
+  color: #2a5298; /* Темно-синий цвет для текста заголовков внутри карточек */
+}

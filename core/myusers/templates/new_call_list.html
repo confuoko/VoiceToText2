@@ -1,13 +1,21 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
-<div class="container mt-4">
-    <h2>Список взаимодействий с клиентами</h2>
 
-    <!-- Отладочная информация -->
-    <p>Количество записей: {{ call_items_count }}</p>
-    <p>Всего страниц: {{ total_pages }}</p>
-    <p>Текущая страница: {{ current_page }}</p>
+<div class="mb-1">
+    <a href="https://datalens.yandex.cloud/sukgj3to9sf4e-demo-report-analiticheskiy-otchet-po-otdelnym-sotrudni?state=0242be3356" class="btn btn-primary w-100 mb-2" target="_blank" rel="noopener noreferrer">
+        Демо: Отчет по конкретному пользователю
+    </a>
+    <a href="https://datalens.yandex.cloud/5kz753uwihz6r-demo-report-portret-territorii" class="btn btn-primary w-100 mb-2" target="_blank" rel="noopener noreferrer">
+        Демо: Отчет по территории
+    </a>
+    <a href="https://datalens.yandex.cloud/hx302qbvochm3-novyy-dashbord" class="btn btn-primary w-100 mb-2" target="_blank" rel="noopener noreferrer">
+        Демо: Сравнительный анализ по территориям
+    </a>
+</div>
+
+<div class="container mt-2">
+    <h2>Список взаимодействий с клиентами</h2>
 
     <!-- Форма для фильтрации -->
     <form method="get" class="mb-3">

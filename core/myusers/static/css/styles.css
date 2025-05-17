@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+
+/* Основной фон */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f4f4f9; /* Светлый фон */
+  min-height: 100vh;
+  color: #333; /* Темный текст для контраста */
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Навигация */
+nav {
+  width: 100%;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  background: #ffffff; /* Белый фон для навигации */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Легкая тень для выделения */
+  border-radius: 8px;
+}
+
+nav a {
+  color: #333; /* Тёмный текст */
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* "Стеклянные" блоки */
+.glass {
+  background: rgba(255, 255, 255, 0.8); /* Легкий стеклянный эффект */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem auto;
+  width: min(90vw, 1000px);
+}
+
+/* Заголовки */
+h2, h3 {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #2a5298; /* Темно-синий для заголовков */
+}
+
+h3 {
+  color: #444; /* Мягкий темный для подзаголовков */
+}
+
+/* Стили для форм */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.icon-input {
+  position: relative;
+  width: 100%;
+}
+
+.icon-input i {
+  position: absolute;
+  top: 50%;
+  left: 0.9rem;
+  transform: translateY(-50%);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.icon-input input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: #ffffff; /* Белый фон для ввода */
+  border: 1px solid #ddd; /* Легкая граница */
+  border-radius: 12px;
+  color: #333; /* Темный текст */
+  font-size: 1rem;
+  outline: none;
+  transition: background 0.3s ease-in-out;
+}
+
+.icon-input input:focus {
+  background: #f8f8f8; /* Светлый фон при фокусе */
+  border-color: #2a5298; /* Синий цвет границы при фокусе */
+}
+
+input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Кнопки */
+button {
+  padding: 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  background: #2a5298; /* Темно-синий цвет для кнопок */
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background-color: #1e3c72; /* Темнее при наведении */
+}
+
+button:active {
+  transform: scale(1);
+  background-color: #172f5d; /* Еще темнее при нажатии */
+}
+
+/* Ошибки */
+.error {
+  font-size: 0.9rem;
+  color: #ff6b6b;
+  display: none;
+}
+
+/* Стили для таблиц */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background: #ffffff; /* Белый фон для таблиц */
+  border-radius: 8px;
+}
+
+th {
+  background-color: #2a5298; /* Темно-синий фон для заголовков таблицы */
+  color: white;
+  padding: 1rem;
+  text-align: left;
+}
+
+td {
+  background-color: #f9f9f9; /* Светло-серый фон для ячеек таблицы */
+  color: #333; /* Темный текст */
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) td {
+  background-color: #f1f1f1; /* Чередование цвета строк таблицы */
+}
+
+tr:hover td {
+  background-color: #e2e2e2; /* Цвет строки при наведении */
+}
+
+/* Пагинация */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.pagination a,
+.pagination span {
+  padding: 0.5rem 1rem;
+  background-color: #2a5298;
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: #00d4ff; /* Изменение фона при наведении */
+}
+
+.pagination a.disabled {
+  background-color: #bbb; /* Тёмный цвет для неактивных кнопок */
+  cursor: not-allowed;
+}
+
+.pagination span {
+  background-color: #00d4ff; /* Активная страница */
+  color: #000;
+}
+
+/* Стиль для заголовков форм */
+h3 {
+  font-weight: 600;
+  color: #2a5298; /* Темный синий для меньших заголовков */
+  margin-bottom: 1rem;
+}

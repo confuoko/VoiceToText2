@@ -2,12 +2,16 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2>Редактирование записи</h2>
-    <form method="post">
+    <h2 class="text-center mb-4">Редактирование записи</h2>
+
+    <form method="post" class="card p-4 shadow-sm">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-success">Сохранить изменения</button>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="submit" class="btn btn-success">Сохранить изменения</button>
+            <a href="{% url 'myusers:new_call_list' %}" class="btn btn-secondary">Назад</a>
+        </div>
     </form>
-    <a href="{% url 'myusers:new_call_list' %}" class="btn btn-secondary mt-3">Назад</a>
 </div>
 {% endblock %}
